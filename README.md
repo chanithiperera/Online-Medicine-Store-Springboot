@@ -38,9 +38,9 @@ I was primarily responsible for implementing the shopping cart and checkout func
 
 Available **CRUD** Operations :-  
 - **Create** -   Add items to cart 
-- **Read**   -   View items in the cart 
+- **Read**   -   View items in the cart<br> 
                  View order summary 
-- **Update** -   Modify item quantity 
+- **Update** -   Modify item quantity<br>
                  Edit shipping or payment details in checkout
 - **Delete** -   Remove items from the cart 
 
