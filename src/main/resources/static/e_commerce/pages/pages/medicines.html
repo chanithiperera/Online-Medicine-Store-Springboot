@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MediCare - Medicines</title>
+  <link rel="stylesheet" href="/e_commerce/pages/css/styles.css" />
+  <link
+          href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+  />
+  <link
+          href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+          rel="stylesheet"
+  />
+  <style>
+    /* Additional styles for medicines page */
+    .breadcrumb {
+      background: linear-gradient(135deg, #a2ded0, #55cab7);
+      padding: 15px 0;
+    }
+
+    .breadcrumb-list {
+      display: flex;
+      align-items: center;
+    }
+
+    .breadcrumb-item {
+      display: flex;
+      align-items: center;
+    }
+
+    .breadcrumb-item:not(:last-child)::after {
+      content: "/";
+      margin: 0 10px;
+      color: var(--dark-grey);
+    }
+
+    .breadcrumb-item a:hover {
+      color: var(--blue);
+    }
+
+    .medicines-container {
+      display: flex;
+      gap: 30px;
+      margin: 40px 0;
+      background-color: var(--light-blue);
+    }
+
+    .filter-sidebar {
+      width: 280px;
+      flex-shrink: 0;
+    }
+
+    .filter-section {
+      background-color: var(--white);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .filter-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--grey);
+    }
+
+    .filter-list {
+      margin-bottom: 15px;
+    }
+
+    .filter-item {
+      margin-bottom: 10px;
+    }
+
+    .filter-checkbox {
+      display: flex;
+      align-items: center;
+    }
+
+    .filter-checkbox input {
+      margin-right: 10px;
+    }
+
+    .filter-checkbox label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .filter-count {
+      color: var(--dark-grey);
+      font-size: 12px;
+    }
+
+    .price-range {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .price-input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid var(--grey);
+      border-radius: 5px;
+      outline: none;
+      font-family: var(--poppins);
+    }
+
+    .filter-btn {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      border: none;
+      background-color: var(--blue);
+      color: var(--white);
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: var(--poppins);
+      font-weight: 500;
+      margin-top: 15px;
+      transition: background-color 0.3s ease;
+    }
+
+    .filter-btn:hover {
+      background-color: #25a892;
+    }
+
+    .products-content {
+      flex: 1;
+    }
+
+    .products-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .products-count {
+      font-size: 16px;
+      color: var(--dark-grey);
+    }
+
+    .products-sort {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sort-label {
+      font-size: 14px;
+      color: var(--dark-grey);
+    }
+
+    .sort-select {
+      padding: 8px 12px;
+      border: 1px solid var(--grey);
+      border-radius: 5px;
+      outline: none;
+      font-family: var(--poppins);
+      cursor: pointer;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 30px;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+      gap: 5px;
+    }
+
+    .pagination-item {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
+      background-color: var(--white);
+      color: var(--dark);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .pagination-item.active {
+      background-color: var(--blue);
+      color: var(--white);
+    }
+
+    .pagination-item:hover:not(.active) {
+      background-color: var(--light-blue);
+    }
+
+    @media (max-width: 992px) {
+      .medicines-container {
+        flex-direction: column;
+      }
+
+      .filter-sidebar {
+        width: 100%;
+      }
+    }
+
+    .medicine-tags {
+      display: flex;
+      gap: 5px;
+      margin-top: 5px;
+      flex-wrap: wrap;
+    }
+
+    .medicine-tag {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 12px;
+      background-color: var(--light-blue);
+      color: var(--blue);
+    }
+
+    .medicine-tag.prescription {
+      background-color: var(--light-purple);
+      color: var(--purple);
+    }
+
+    .medicine-tag.otc {
+      background-color: var(--light-yellow);
+      color: var(--orange);
+    }
+
+    .filter-toggle {
+      display: none;
+      width: 100%;
+      padding: 10px;
+      background-color: var(--blue);
+      color: var(--white);
+      border: none;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      font-family: var(--poppins);
+      font-weight: 500;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .medicine-main {
+      background-color: #D8F3EF;
+    }
+
+    @media (max-width: 992px) {
+      .filter-toggle {
+        display: flex;
+      }
+
+      .filter-sidebar {
+        display: none;
+      }
+
+      .filter-sidebar.active {
+        display: block;
+      }
+    }
+
+    .loader {
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        border-top: 4px solid var(--blue);
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 50px auto;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 50px 20px;
+    }
+    
+    /* Notification styles */
+    .notification {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: var(--blue);
+        color: white;
+        padding: 15px 25px;
+        border-radius: 5px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transform: translateY(100px);
+        opacity: 0;
+        transition: all 0.3s ease;
+        z-index: 1000;
+    }
+    
+    .notification.show {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    
+    .pulse {
+        animation: pulse 0.3s ease;
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+<!-- HEADER -->
+<header id="dynamic-header"></header>
+<script>
+  fetch("header.html")
+          .then((response) => response.text())
+          .then((data) => {
+            document.getElementById("dynamic-header").innerHTML = data;
+          });
+</script>
+<script src="/e_commerce/pages/js/auth-check.js"></script>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <div class="container">
+    <ul class="breadcrumb-list">
+      <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+      <li class="breadcrumb-item">Medicines</li>
+    </ul>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<main class="medicine-main">
+  <div class="container">
+    <h1>All Medicines</h1>
+
+    <button class="filter-toggle">
+      <i class="bx bx-filter"></i>
+      <span>Show Filters</span>
+    </button>
+
+    <div class="medicines-container">
+      <!-- FILTER SIDEBAR -->
+      <div class="filter-sidebar">
+        <div class="filter-section">
+          <h3 class="filter-title">Categories</h3>
+          <div class="filter-list">
+            <div class="filter-item">
+              <div class="filter-checkbox">
+                <input type="checkbox" id="cat-all" checked />
+                <label for="cat-all"
+                >All Medicines
+                  <span class="filter-count">(352)</span></label
+                >
+              </div>
+            </div>
+            <div class="filter-item">
+              <div class="filter-checkbox">
+                <input type="checkbox" id="cat-prescription" />
+                <label for="cat-prescription"
+                >Prescription
+                  <span class="filter-count">(124)</span></label
+                >
+              </div>
+            </div>
+            <div class="filter-item">
+              <div class="filter-checkbox">
+                <input type="checkbox" id="cat-otc" />
+                <label for="cat-otc"
+                >Over-the-Counter
+                  <span class="filter-count">(98)</span></label
+                >
+              </div>
+            </div>
+            <div class="filter-item">
+              <div class="filter-checkbox">
+                <input type="checkbox" id="cat-ayurvedic" />
+                <label for="cat-ayurvedic"
+                >Ayurvedic <span class="filter-count">(65)</span></label
+                >
+              </div>
+            </div>
+            <div class="filter-item">
+              <div class="filter-checkbox">
+                <input type="checkbox" id="cat-homeopathy" />
+                <label for="cat-homeopathy"
+                >Homeopathy <span class="filter-count">(43)</span></label
+                >
+              </div>
+            </div>
+            <div class="filter-item">
+              <div class="filter-checkbox">
+                <input type="checkbox" id="cat-generic" />
+                <label for="cat-generic"
+                >Generic <span class="filter-count">(22)</span></label
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <h3 class="filter-title">Health Conditions</h3>
+          <div class="filter-list">
+            <div class="filter-item">
+              <div class="filter-checkbox">
+                <input type="checkbox" id="cond-fever" />
+                <label for="cond-fever"
+                >Fever & Pain
+                  <span class="filter-count">(48)</span></label
+                >
+              </div>
+            </div>
+            <div class="filter-item">
+              <div class="filter-checkbox">
+                <input type="checkbox" id="cond-cold" />
+                <label for="cond-cold"
+                >Cold & Cough
+                  <span class="filter-count">(37)</span></label
+                >
+              </div>
+            </div>
+            <div class="filter-item">
+              <div class="filter-checkbox">
+                <input type="checkbox" id="cond-digestive" />
+                <label for="cond-digestive"
+                >Digestive Health
+                  <span class="filter-count">(29)</span></label
+                >
+              </div>
+            </div>
+            <div class="filter-item">
+              <div class="filter-checkbox">
+                <input type="checkbox" id="cond-cardiac" />
+                <label for="cond-cardiac"
+                >Cardiac Care
+                  <span class="filter-count">(23)</span></label
+                >
+              </div>
+            </div>
+            <div class="filter-item">
+              <div class="filter-checkbox">
+                <input type="checkbox" id="cond-diabetes" />
+                <label for="cond-diabetes"
+                >Diabetes <span class="filter-count">(19)</span></label
+                >
+              </div>
+            </div>
+            <div class="filter-item">
+              <div class="filter-checkbox">
+                <input type="checkbox" id="cond-skin" />
+                <label for="cond-skin"
+                >Skin Care <span class="filter-count">(16)</span></label
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <h3 class="filter-title">Brands</h3>
+          <div class="filter-list">
+            <div class="filter-item">
+              <div class="filter-checkbox">
+                <input type="checkbox" id="brand-1" />
+                <label for="brand-1"
+                >MediTrust <span class="filter-count">(42)</span></label
+                >
+              </div>
+            </div>
+            <div class="filter-item">
+              <div class="filter-checkbox">
+                <input type="checkbox" id="brand-2" />
+                                <label for="brand-2"
+                >HealthPlus <span class="filter-count">(38)</span></label
+                >
+              </div>
+            </div>
+            <div class="filter-item">
+              <div class="filter-checkbox">
+                <input type="checkbox" id="brand-3" />
+                <label for="brand-3"
+                >NatureCare <span class="filter-count">(31)</span></label
+                >
+              </div>
+            </div>
+            <div class="filter-item">
+              <div class="filter-checkbox">
+                <input type="checkbox" id="brand-4" />
+                <label for="brand-4"
+                >MediLife <span class="filter-count">(27)</span></label
+                >
+              </div>
+            </div>
+            <div class="filter-item">
+              <div class="filter-checkbox">
+                <input type="checkbox" id="brand-5" />
+                <label for="brand-5"
+                >VitaMax <span class="filter-count">(24)</span></label
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <h3 class="filter-title">Price Range</h3>
+          <div class="price-range">
+            <input
+                    type="number"
+                    class="price-input"
+                    placeholder="Min"
+                    value="0"
+            />
+            <span>-</span>
+            <input
+                    type="number"
+                    class="price-input"
+                    placeholder="Max"
+                    value="100"
+            />
+          </div>
+          <button class="filter-btn">Apply Filter</button>
+        </div>
+      </div>
+
+      <!-- PRODUCTS CONTENT -->
+      <div class="products-content">
+        <div class="products-header">
+          <div class="products-count">
+            Showing <span id="showing-start">0</span>-<span id="showing-end">0</span> of <span id="total-products">0</span> products
+          </div>
+          <div class="products-sort">
+            <span class="sort-label">Sort by:</span>
+            <select class="sort-select">
+              <option value="popularity">Popularity</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="newest">Newest First</option>
+              <option value="rating">Highest Rated</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="products-grid" id="products-grid">
+          <!-- Products will be loaded dynamically -->
+          <div class="loader" id="products-loader"></div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination" id="pagination">
+          <!-- Pagination will be added dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer id="dynamic-footer"></footer>
+<script>
+  fetch("footer.html")
+          .then((response) => response.text())
+          .then((data) => {
+            document.getElementById("dynamic-footer").innerHTML = data;
+          });
+</script>
+
+<!-- JavaScript for filter toggle and mobile navigation -->
+<script>
+  // Mobile menu toggle
+  const mobileMenuToggle = document.querySelector(".mobile-menu-toggle");
+  const mobileNav = document.querySelector(".mobile-nav");
+
+  if (mobileMenuToggle && mobileNav) {
+    mobileMenuToggle.addEventListener("click", function () {
+      mobileNav.classList.toggle("active");
+    });
+  }
+
+  // Mobile dropdown toggle
+  const mobileDropdownToggles = document.querySelectorAll(
+          ".mobile-dropdown-toggle"
+  );
+
+  mobileDropdownToggles.forEach((toggle) => {
+    toggle.addEventListener("click", function (e) {
+      e.preventDefault();
+      this.parentElement.classList.toggle("active");
+    });
+  });
+
+  // Filter sidebar toggle for mobile
+  const filterToggle = document.querySelector(".filter-toggle");
+  const filterSidebar = document.querySelector(".filter-sidebar");
+
+  if (filterToggle && filterSidebar) {
+    filterToggle.addEventListener("click", function () {
+      filterSidebar.classList.toggle("active");
+      this.innerHTML = filterSidebar.classList.contains("active")
+              ? '<i class="bx bx-x"></i><span>Hide Filters</span>'
+              : '<i class="bx bx-filter"></i><span>Show Filters</span>';
+    });
+  }
+</script>
+
+<!-- Load cart.js before medicines.js -->
+<script src="/e_commerce/pages/js/cart.js"></script>
+<script src="/e_commerce/pages/js/medicines.js"></script>
+</body>
+</html>
+
