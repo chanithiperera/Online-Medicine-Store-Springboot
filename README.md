@@ -34,16 +34,15 @@ Users can register, log in, browse available medicines, add them to a cart, and 
 
 ## My Contribution
 
-I was primarily responsible for implementing the cart and checkout functionalities.
+I was primarily responsible for implementing the shopping cart and checkout functionalities.
 
-### Cart
-- Add and remove individual items
-- Calculate total price dynamically
-- Display product details (name, quantity, price)
-
-### Checkout
-- Finalize and store orders in a JSON file
-- Process orders using a queue structure to simulate real-time order handling
+Available **CRUD** Operations :-  
+▪ **Create** -   Add items to cart 
+▪ **Read** -     View items in the cart 
+             View order summary 
+▪ **Update** -   Modify item quantity 
+             Edit shipping or payment details in checkout
+▪ **Delete** -   Remove items from the cart 
 
 Additionally, I integrated the queue logic for order processing and assisted with JSON-based CRUD operations for cart management.
 
