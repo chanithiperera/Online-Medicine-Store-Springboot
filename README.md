@@ -37,12 +37,12 @@ Users can register, log in, browse available medicines, add them to a cart, and 
 I was primarily responsible for implementing the shopping cart and checkout functionalities.
 
 Available **CRUD** Operations :-  
-▪ **Create** -   Add items to cart 
-▪ **Read** -     View items in the cart 
-             View order summary 
-▪ **Update** -   Modify item quantity 
-             Edit shipping or payment details in checkout
-▪ **Delete** -   Remove items from the cart 
+- **Create** -   Add items to cart 
+- **Read**   -   View items in the cart 
+                 View order summary 
+- **Update** -   Modify item quantity 
+                 Edit shipping or payment details in checkout
+- **Delete** -   Remove items from the cart 
 
 Additionally, I integrated the queue logic for order processing and assisted with JSON-based CRUD operations for cart management.
 
